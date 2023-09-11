@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="jquery.js"></script>
+    <script>
+      $(() => {
+        const imgList = $("#imglist li");
+        imgList.hide();
+        let select = 0;
+        imgList.eq(select).fadeIn();
+        let intervalID = null;
+
+        const handleImg = () => {
+          if (select < imgList.length) {
+            select++;
+          } else {
+            select--;
+          }
+          if (select > imgList.length - 1) {
+            select = 0;
+          }
+          imgList.eq(select - 1).fadeOut();
+          imgList.eq(select).fadeIn();
+          console.log("auto", select);
+        };
+        intervalID = setInterval(handleImg, 3000);
+        console.log(intervalID);
+
+        $("#button button")
+          .eq(0)
+          .click(function () {
+            if (select <= 0) {
+              select = imgList.length - 1;
+            } else {
+              select--;
+            }
+            imgList.hide();
+            imgList.eq(select).show();
+            console.log("prebtn", select);
+          });
+
+        $("#button button")
+          .eq(1)
+          .click(function () {
+            if (select >= imgList.length - 1) {
+              select = 0;
+            } else {
+              select++;
+            }
+            imgList.hide();
+            imgList.eq(select).show();
+            console.log("nextbtn", select);
+          });
+
+        $("#wrap").hover(
+          function () {
+            clearInterval(intervalID);
+            intervalID = null;
+            console.log("멈춰");
+            $("#button").fadeIn();
+          },
+          function () {
+            intervalID = setInterval(handleImg, 3000);
+            console.log("재시작");
+            $("#button").fadeOut();
+          }
+        );
+      });
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      ul {
+        list-style: none;
+      }
+      #wrap {
+        width: fit-content;
+        margin: 0 auto;
+        position: relative;
+      }
+      #slider {
+        width: 1000px;
+        height: 300px;
+        overflow: hidden;
+        position: relative;
+      }
+      #imglist li img {
+        width: 1000px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      button {
+        background-color: rgba(255, 255, 255, 0.8);
+        color: black;
+        padding: 10px 20px;
+        border: 0;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      #button button:first-child {
+        position: absolute;
+        top: 45%;
+        left: 10px;
+      }
+      #button button:last-child {
+        position: absolute;
+        top: 45%;
+        right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="slider">
+        <ul id="imglist">
+          <li><img src="bgImg/1.jpg" /></li>
+          <li><img src="bgImg/2.jpg" /></li>
+          <li><img src="bgImg/3.jpg" /></li>
+          <li><img src="bgImg/4.jpg" /></li>
+          <li><img src="bgImg/5.jpg" /></li>
+        </ul>
+      </div>
+      <div id="button">
+        <button>prev</button>
+        <button>next</button>
+      </div>
+    </div>
+  </body>
+</html>
